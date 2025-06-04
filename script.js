@@ -117,7 +117,7 @@ form.addEventListener("submit", async function (e) {
   const text = input.value.trim();
   if (!text) return;
 
-  const res = await fetch("https://todo-app-x7uj.onrender.com", {
+  const res = await fetch("http://localhost:3000/todos", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text, date: selectedDate }) // ✅ 여기에 있어야 함
@@ -153,6 +153,7 @@ async function loadTodosByDate(date) {
   currentTodos = todos;
   renderTodos(todos);
 } // 날짜에 따라 할 일 불러오기
+
 //
 
 // 시작할 때 서버에서 할 일 목록 불러오기
