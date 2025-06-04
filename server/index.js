@@ -12,8 +12,7 @@ app.use(bodyParser.json());
 // MongoDB 연결
 mongoose
   .connect("mongodb+srv://bbakain:bgh902902!@cluster0.ltjtjuy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+
   })
   .then(() => console.log("✅ MongoDB에 연결됨"))
   .catch(err => console.error("❌ 연결 실패:", err));
