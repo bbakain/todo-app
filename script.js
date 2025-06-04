@@ -153,6 +153,8 @@ async function loadTodosByDate(date) {
   currentTodos = todos;
   renderTodos(todos);
 } // 날짜에 따라 할 일 불러오기
+; // 할 일 추가 시 선택된 날짜로 저장되게 변경
+
 
 //
 
