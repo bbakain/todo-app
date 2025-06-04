@@ -117,7 +117,7 @@ form.addEventListener("submit", async function (e) {
   const text = input.value.trim();
   if (!text) return;
 
-  const res = await fetch("http://localhost:3000/todos", {
+  const res = await fetch("https://todo-app-x7uj.onrender.com", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text, date: selectedDate }) // ✅ 여기에 있어야 함
