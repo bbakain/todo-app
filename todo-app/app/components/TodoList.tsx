@@ -1,14 +1,5 @@
 "use client";
-
 import { useEffect, useState } from "react";
-
-// 날짜 계산 함수는 컴포넌트 바깥에서 정의해야 useState 초기값에서 사용할 수 있음
-const getTodayKST = () => {
-  const date = new Date();
-  const offset = 9 * 60;
-  const local = new Date(date.getTime() + offset * 60 * 1000);
-  return local.toISOString().split("T")[0];
-};
 
 type Todo = {
   _id?: string;
@@ -17,10 +8,18 @@ type Todo = {
   date: string;
 };
 
+const getTodayKST = () => {
+  const date = new Date();
+  const offset = 9 * 60;
+  const local = new Date(date.getTime() + offset * 60 * 1000);
+  return local.toISOString().split("T")[0];
+};
+
 export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [input, setInput] = useState("");
   const [selectedDate, setSelectedDate] = useState(getTodayKST());
+  const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
 
   useEffect(() => {
     loadTodosByDate(selectedDate);
@@ -31,6 +30,12 @@ export default function TodoList() {
     const data = await res.json();
     setTodos(data);
   };
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "active") return !todo.completed;
+    if (filter === "completed") return todo.completed;
+    return true;
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,11 +84,11 @@ export default function TodoList() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="할 일을 입력하세요"
-          className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:bg-gray-100"
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className="px-4 py-2 bg-gray-950 text-white rounded-md hover:bg-gray-800"
         >
           추가
         </button>
@@ -93,11 +98,17 @@ export default function TodoList() {
         type="date"
         value={selectedDate}
         onChange={(e) => setSelectedDate(e.target.value)}
-        className="mb-4 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="mb-4 w-full px-3 py-2 border rounded-md focus:outline-none focus:bg-gray-100"
       />
 
-      <ul className="space-y-2">
-        {todos.map((todo) => (
+      <div className="flex gap-2 justify-center mt-4 text-sm">
+        <button onClick={() => setFilter("all")} className="text-gray-600 hover:text-black">전체</button>
+        <button onClick={() => setFilter("active")} className="text-gray-600 hover:text-black">진행중</button>
+        <button onClick={() => setFilter("completed")} className="text-gray-600 hover:text-black">완료됨</button>
+      </div>
+
+      <ul className="space-y-2 mt-4">
+        {filteredTodos.map((todo) => (
           <li
             key={todo._id}
             className="bg-gray-50 px-4 py-2 rounded-md flex justify-between items-center shadow-sm"
@@ -121,7 +132,7 @@ export default function TodoList() {
               onClick={() => deleteTodo(todo._id)}
               className="text-red-400 hover:text-red-600 text-sm"
             >
-              ❌
+              🗑️
             </button>
           </li>
         ))}
