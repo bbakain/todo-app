@@ -1,0 +1,62 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+.todo-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.todo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* 입력 필드 포커스 효과 */
+#todo-input:focus {
+  transform: scale(1.01);
+}
+
+/* 체크박스 커스텀 스타일 */
+input[type="checkbox"] {
+  accent-color: #3b82f6;
+}
+
+/* 버튼 호버 효과 */
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* 반응형 그리드 조정 */
+@media (max-width: 768px) {
+  #todo-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  #todo-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 로딩 애니메이션 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.todo-card {
+  animation: fadeInUp 0.3s ease-out;
+}  
