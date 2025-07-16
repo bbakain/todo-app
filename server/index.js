@@ -1,7 +1,14 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
+
+/* const express = import("express");
+const cors = import("cors");
+const bodyParser = import("body-parser");
+const mongoose = import("mongoose"); */
+
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import fetch from "node-fetch"; // 👈 npm install node-fetch 필요
 
 const app = express();
 const PORT = 3000;
@@ -39,7 +46,18 @@ app.post("/todos", async (req, res) => {
 
   const newTodo = new Todo({ text, date, completed: false });
   await newTodo.save();
+    // 구글캘린더 연동 기능 Webhook-Zapier
+  await fetch("https://hooks.zapier.com/hooks/catch/23454440/uoa5y6r/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      text: newTodo.text,
+      date: newTodo.date,
+      completed: newTodo.completed
+    })
+  });
   res.json(newTodo);
+
 });
 
 app.listen(PORT, () => {
@@ -83,3 +101,4 @@ app.patch("/todos/:id", async (req, res) => {
       res.status(500).json({ error: "전체 삭제 실패" });
     }
   });
+
