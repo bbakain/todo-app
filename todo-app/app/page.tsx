@@ -1,4 +1,5 @@
 // app/page.tsx
+"use client";
 import TodoList from "./components/TodoList";
 import { useState } from "react";
 
